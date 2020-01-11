@@ -30,7 +30,7 @@ import org.springframework.web.client.RestTemplate;
 public class AcquiringBankController {
 
 	@CrossOrigin
-	@PostMapping(path="/test1")
+	@PostMapping(path="/sendDetails")
 	public String  getMyCardDetails(@RequestBody Map<String,String> payload){
 		
 		HttpHeaders headers = new HttpHeaders();
