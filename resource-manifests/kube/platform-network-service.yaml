@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-network
+  labels:
+    app: platform-network
+spec:
+  selector:
+    matchLabels:
+      app:  platform-network
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: 
+      maxUnavailable: 1
+      maxSurge: 1 
+  template:
+    metadata:
+      labels:
+        app: platform-network
+        version: v1
+    spec:
+      containers:
+      - image: shagunbandi/platform-network
+        imagePullPolicy: Always
+        name: platform-network
+        env:
+        - name: PN_LOGIC_API_URL
+          value: http://pn-logic
+        - name: JAEGER_SERVICE_NAME
+          value: platform-network
+        - name: JAEGER_AGENT_HOST
+          value: jaeger-agent.istio-system.svc.cluster.local
+        - name: JAEGER_REPORTER_LOG_SPANS
+          value: "true"
+        - name: JAEGER_SAMPLER_TYPE
+          value: const
+        - name: JAEGER_SAMPLER_PARAM
+          value: "1"
+        - name: JAEGER_PROPAGATION
+          value: b3
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: platform-network
+  labels:
+    app: platform-network
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  selector:
+    app: platform-network
