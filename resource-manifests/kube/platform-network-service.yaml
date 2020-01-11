@@ -50,7 +50,7 @@ metadata:
   labels:
     app: platform-network
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: http
     port: 80
