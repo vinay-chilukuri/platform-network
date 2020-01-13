@@ -16,3 +16,22 @@ spec:
         host: platform-network
         port:
           number: 80
+    corsPolicy:
+      allowOrigin:
+      - "*"
+      allowMethods:
+      - POST
+      - OPTIONS
+      - GET
+      allowHeaders:
+      - Access-Control-Allow-Origin
+      - authorization
+      - content-type
+      - accept
+      - origin
+      - user-agent
+      exposeHeaders:
+      - x-custom-header
+      maxAge: 300s
+      allowCredentials: true   
+       
